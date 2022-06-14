@@ -1,12 +1,19 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
+import Input from "../input/input";
+import Button from "../button/button";
 
 const Form = () => {
-  const [todos, setTodos] = React.useState([]);
-  const [title, setTitle] = React.useState("");
-  const [description, setDescription] = React.useState("");
-  const [loading, setLoading] = React.useState(false);
+  const [todos, setTodos] = useState([]);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    axios.get("http://127.0.0.1:8000/todo/todos/").then((response) => {
+      setTodos(response.data);
+    });
+  }, []);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -28,6 +35,7 @@ const Form = () => {
     setTitle("");
     setDescription("");
   };
+
   const deleteHandler = (id) => {
     axios.delete(`http://127.0.0.1:8000/todo/todos/${id}/`);
     setTodos(
@@ -111,44 +119,43 @@ const Form = () => {
   const processChange = debounce((e, id) => saveInput(e, id));
 
   /////////////////////////////////////////////////////////////////////////
-  useEffect(() => {
-    axios.get("http://127.0.0.1:8000/todo/todos/").then((response) => {
-      setTodos(response.data);
-    });
-  }, []);
+
   return (
     <form onSubmit={submitHandler}>
       <h1>Todo list</h1>
-
-      <input
+      <Input
         type="text"
-        placeholder="title"
+        placeholder={"Title"}
         value={title}
         onChange={titleOnChangeHandler}
       />
-      <input
-        type="text"
-        placeholder="description"
+
+      <Input
+        type={"text"}
+        placeholder={"description"}
         onChange={descriptionOnChangeHandler}
         value={description}
       />
 
-      <button>Add</button>
+      <Button>Add</Button>
       <div>
         {todos.map((todo) => (
-          <ul key={todo.id}>
-            <li>{todo.title}</li>
-            <li>{todo.description}</li>
-            <button disabled={loading} onClick={() => deleteHandler(todo.id)}>
-              delete
-            </button>
-            <input
-              type="checkbox"
-              placeholder="completed"
+          <div>
+            <ul key={todo.id}>
+              <li>{todo.title}</li>
+              <li>{todo.description}</li>
+            </ul>
+            <Button disabled={loading} onClick={() => deleteHandler(todo.id)}>
+              Delete
+            </Button>
+
+            <Input
+              type={"checkbox"}
+              placeholder={"completed"}
               onChange={(e) => processChange(e, todo.id)}
               checked={todo.completed}
             />
-          </ul>
+          </div>
         ))}
       </div>
     </form>
