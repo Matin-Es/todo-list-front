@@ -1,8 +1,22 @@
+import { StyledButton } from "./button.style";
 const Button = (props) => {
   return (
-    <button disabled={props.disabled} onClick={props.onClick}>
+    <StyledButton
+      variant={props.variant}
+      disabled={props.disabled}
+      onClick={props.onClick}
+      backgroundColor={props.backgroundColor}
+      marginTop={props.marginTop}
+      width={props.width}
+      height={props.height}
+      backgroundImage={props.backgroundImage}
+      position={props.position}
+      top={props.top}
+      left={props.left}
+      type={props.type}
+    >
       {props.children}
-    </button>
+    </StyledButton>
   );
 };
 
