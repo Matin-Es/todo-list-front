@@ -4,10 +4,13 @@ import Checkbox from "../checkbox/checkbox";
 import { StyledDiv, StyledUl, StyledLi } from "./task.style";
 
 const Task = (props) => {
+  const truncate = (str) => {
+    return str.length > 10 ? str.substring(0, 12) + "..." : str;
+  };
   return (
     <StyledDiv key={props.id}>
-      <StyledUl>
-        <StyledLi marginTop={props.marginTop}>{props.title}</StyledLi>
+      <StyledUl onClick={props.onRequestOpen}>
+        <StyledLi marginTop={props.marginTop}>{truncate(props.title)}</StyledLi>
         {/* <li>{props.description}</li> */}
       </StyledUl>
       <Checkbox

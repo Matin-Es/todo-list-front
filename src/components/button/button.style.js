@@ -19,6 +19,9 @@ export const StyledButton = styled.button`
   background-repeat: no-repeat;
   background-position: center;
   background-size: 20px;
+  :hover {
+    background-color: ${(props) => props.hoverBackgroundColor};
+  }
 
   :disabled {
     background-color: #dddddd;

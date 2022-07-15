@@ -86,6 +86,7 @@ const Form = () => {
             marginTop={"18px"}
             width={"115px"}
             height={"34px"}
+            hoverBackgroundColor={"#4dc9ff"}
           >
             Add
           </Button>

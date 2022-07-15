@@ -6,6 +6,7 @@ export const StyledDiv = styled.div`
 `;
 export const StyledUl = styled.ul`
   margin-top: 26px;
+  cursor: pointer;
 `;
 export const StyledLi = styled.li`
   padding: 10px;

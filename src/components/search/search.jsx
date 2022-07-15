@@ -6,14 +6,25 @@ import Task from "../task/task";
 import axios from "axios";
 import { todosContext } from "../../context/todosContext";
 import { motion, AnimatePresence } from "framer-motion";
+import ModalBox from "../modal/modal";
 
 const Search = (props) => {
   const [query, setQuery] = useState("");
   const { todos, setTodos } = useContext(todosContext);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [currentTodo, setCurrentTodo] = useState([]);
 
   const PER_PAGE = 4;
+
+  const openModal = (todoItem) => {
+    setCurrentTodo(todoItem);
+    setIsOpen(true);
+  };
+  function closeModal() {
+    setIsOpen(false);
+  }
 
   const getFilteredItems = (query, todos) => {
     if (!query) {
@@ -86,6 +97,17 @@ const Search = (props) => {
   console.log(currentPage);
   const processChange = debounce((e, id) => saveInput(e, id));
 
+  const customStyles = {
+    content: {
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+  };
+
   return (
     <StyledDiv>
       <StyledInput
@@ -97,25 +119,44 @@ const Search = (props) => {
       />{" "}
       <AnimatePresence>
         {currentPageData.map((todo) => (
-          <motion.div    initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0,position:"absolute",y:-1000,transition:"1s" }} key={todo.id}>
-          <Task
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{
+              opacity: 0,
+              position: "absolute",
+              y: -1000,
+              transition: "1s",
+            }}
             key={todo.id}
-            title={todo.title}
-            description={todo.description}
-            backgroundColor="#ffffff"
-            disabled={loading}
-            onClick={() => deleteHandler(todo.id)}
-            placeholder={"completed"}
-            onChange={(e) => processChange(e, todo.id)}
-            checked={todo.completed}
-            id={todo.id}
-            htmlFor={todo.id}
-            marginTop="-5px"
-          ></Task></motion.div>
+          >
+            <Task
+              onRequestOpen={() => openModal(todo)}
+              key={todo.id}
+              title={todo.title}
+              description={todo.description}
+              backgroundColor="#ffffff"
+              disabled={loading}
+              onClick={() => deleteHandler(todo.id)}
+              placeholder={"completed"}
+              onChange={(e) => processChange(e, todo.id)}
+              checked={todo.completed}
+              id={todo.id}
+              htmlFor={todo.id}
+              marginTop="-5px"
+            ></Task>
+          </motion.div>
         ))}
       </AnimatePresence>
+      <ModalBox
+        modalIsOpen={modalIsOpen}
+        closeModal={closeModal}
+        customStyles={customStyles}
+        currentTodo={currentTodo}
+        description={currentTodo.description}
+      >
+        Close
+      </ModalBox>
       {todos.length > 0 && (
         <Pagination
           pageCount={PageCount}

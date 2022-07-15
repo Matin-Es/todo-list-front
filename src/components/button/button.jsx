@@ -14,6 +14,7 @@ const Button = (props) => {
       top={props.top}
       left={props.left}
       type={props.type}
+      hoverBackgroundColor={props.hoverBackgroundColor}
     >
       {props.children}
     </StyledButton>
