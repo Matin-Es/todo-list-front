@@ -22,6 +22,7 @@ const Task = (props) => {
         htmlFor={props.htmlFor}
         type="checkbox"
       />
+      <div onClick={props.notifyHandler}>
       <Button
         backgroundColor={props.backgroundColor}
         disabled={props.disabled}
@@ -35,7 +36,7 @@ const Task = (props) => {
         type="button"
       >
         {props.children}
-      </Button>
+      </Button></div>
     </StyledDiv>
   );
 };

@@ -24,6 +24,7 @@ const ModalBox = (props) => {
         position="sticky"
         top={"80%"}
         left={"44.5%"}
+        marginTop={"10px"}
       >
         {props.children}
       </Button>

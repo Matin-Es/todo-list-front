@@ -7,6 +7,7 @@ import axios from "axios";
 import { todosContext } from "../../context/todosContext";
 import { motion, AnimatePresence } from "framer-motion";
 import ModalBox from "../modal/modal";
+import { toast } from "react-toastify";
 
 const Search = (props) => {
   const [query, setQuery] = useState("");
@@ -17,6 +18,9 @@ const Search = (props) => {
   const [currentTodo, setCurrentTodo] = useState([]);
 
   const PER_PAGE = 4;
+
+  const successNotify = (msg) => toast.success(msg);
+  const errorNotify = (msg) => toast.error(msg);
 
   const openModal = (todoItem) => {
     setCurrentTodo(todoItem);
@@ -45,12 +49,23 @@ const Search = (props) => {
   const PageCount = Math.ceil(todos.length / PER_PAGE);
 
   const deleteHandler = (id) => {
-    axios.delete(`http://127.0.0.1:8000/todo/todos/${id}/`);
-    setTodos(
-      todos.filter((todo) => {
-        return todo.id !== id;
+    axios
+      .delete(`http://127.0.0.1:8000/todo/todos/${id}/`)
+      .then((response) => {
+        setTodos(
+          todos.filter((todo) => {
+            return todo.id !== id;
+          })
+        );
+        successNotify("Task deleted Successfully");
       })
-    );
+      .catch((error) => {
+        if (error.response.status >= 500 && error.response.status <= 599) {
+          errorNotify("Something went wrong, but that's not your fault");
+        } else {
+          errorNotify("Something went wrong");
+        }
+      });
   };
 
   const debounce = (func, timeout = 350) => {
@@ -85,7 +100,11 @@ const Search = (props) => {
           );
         },
         (error) => {
-          console.log(error);
+          if (error.response.status === 500) {
+            errorNotify("Something went wrong, but that's not your fault");
+          } else {
+            errorNotify("Something went wrong");
+          }
         }
       );
   };
@@ -144,6 +163,7 @@ const Search = (props) => {
               id={todo.id}
               htmlFor={todo.id}
               marginTop="-5px"
+              notifyHandler={successNotify}
             ></Task>
           </motion.div>
         ))}
