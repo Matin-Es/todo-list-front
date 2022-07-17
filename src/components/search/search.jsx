@@ -1,21 +1,21 @@
 import { useContext, useState } from "react";
-
-import Pagination from "../pagination/pagination";
-import { StyledInput, StyledDiv } from "./search.style";
-import Task from "../task/task";
-import axios from "axios";
 import { todosContext } from "../../context/todosContext";
+import { REACT_APP_BASE_URL } from "../../config";
 import { motion, AnimatePresence } from "framer-motion";
-import ModalBox from "../modal/modal";
+import { StyledInput, StyledDiv } from "./search.style";
 import { toast } from "react-toastify";
+import Pagination from "../pagination/pagination";
+import axios from "axios";
+import Task from "../task/task";
+import ModalBox from "../modal/modal";
 
-const Search = (props) => {
-  const [query, setQuery] = useState("");
+const Search = () => {
   const { todos, setTodos } = useContext(todosContext);
-  const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
-  const [modalIsOpen, setIsOpen] = useState(false);
   const [currentTodo, setCurrentTodo] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   const PER_PAGE = 4;
 
@@ -39,7 +39,7 @@ const Search = (props) => {
   };
   const filteredItems = getFilteredItems(query, todos);
   const handlePageClick = ({ selected: selectedPage }) => {
-    console.log("selectedPage", selectedPage);
+    // console.log("selectedPage", selectedPage);
     setCurrentPage(selectedPage);
     setQuery("");
   };
@@ -51,7 +51,7 @@ const Search = (props) => {
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       axios
-        .delete(`http://127.0.0.1:8000/todo/todos/${id}/`)
+        .delete(`${REACT_APP_BASE_URL}/todos/${id}/`)
         .then(() => {
           setTodos(
             todos.filter((todo) => {
@@ -87,15 +87,15 @@ const Search = (props) => {
   };
   const saveInput = (e, id) => {
     const x = !e.target.checked;
-    console.log(x);
+    // console.log(x);
 
     axios
-      .patch(`http://127.0.0.1:8000/todo/todos/${id}/`, {
+      .patch(`${REACT_APP_BASE_URL}/todos/${id}/`, {
         completed: x,
       })
       .then(
         (response) => {
-          console.log(response.data);
+          // console.log(response.data);
 
           setTodos((val) =>
             val.map((item) =>
@@ -117,7 +117,7 @@ const Search = (props) => {
     setCurrentPage(0);
   };
 
-  console.log(currentPage);
+  // console.log(currentPage);
   const processChange = debounce((e, id) => saveInput(e, id));
 
   const customStyles = {
@@ -134,12 +134,12 @@ const Search = (props) => {
   return (
     <StyledDiv>
       <StyledInput
-        type="search"
-        marginTop="25px"
         onChange={SearchOnChangeHandler}
-        placeholder="search..."
         value={query}
-      />{" "}
+        type="search"
+        placeholder="search..."
+        marginTop="25px"
+      />
       <AnimatePresence>
         {currentPageData.map((todo) => (
           <motion.div
@@ -154,20 +154,20 @@ const Search = (props) => {
             key={todo.id}
           >
             <Task
-              onRequestOpen={() => openModal(todo)}
               key={todo.id}
+              id={todo.id}
+              onRequestOpen={() => openModal(todo)}
+              deleteHandler={() => deleteHandler(todo.id)}
+              onChange={(e) => processChange(e, todo.id)}
+              notifyHandler={successNotify}
+              htmlFor={todo.id}
+              disabled={loading}
+              placeholder={"completed"}
               title={todo.title}
               description={todo.description}
-              backgroundColor="#ffffff"
-              disabled={loading}
-              deleteHandler={() => deleteHandler(todo.id)}
-              placeholder={"completed"}
-              onChange={(e) => processChange(e, todo.id)}
               checked={todo.completed}
-              id={todo.id}
-              htmlFor={todo.id}
+              backgroundColor="#ffffff"
               marginTop="-5px"
-              notifyHandler={successNotify}
             ></Task>
           </motion.div>
         ))}
@@ -175,23 +175,23 @@ const Search = (props) => {
       <ModalBox
         modalIsOpen={modalIsOpen}
         closeModal={closeModal}
-        customStyles={customStyles}
         currentTodo={currentTodo}
+        customStyles={customStyles}
         description={currentTodo.description}
       >
         Close
       </ModalBox>
       {todos.length > 0 && (
         <Pagination
-          pageCount={PageCount}
           onPageChange={handlePageClick}
-          previousLabel={"<"}
-          nextLabel={">"}
+          pageCount={PageCount}
           containerClassName={"paginationBttns"}
           previousLinkClassName={"previousBttn"}
           nextLinkClassName={"nextBttn"}
           disabledClassName={"paginationDisabled"}
           activeClassName={"paginationActive"}
+          previousLabel={"<"}
+          nextLabel={">"}
           marginPagesDisplayed={1}
           pageRangeDisplayed={0}
         />

@@ -1,4 +1,3 @@
-import React from "react";
 import { StyledDiv } from "./calendar.style";
 
 const weekday = [

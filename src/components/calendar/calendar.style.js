@@ -6,5 +6,4 @@ export const StyledDiv = styled.div`
   color: ${(props) => props.color};
   justify-content: center;
   text-align: center;
-  
 `;

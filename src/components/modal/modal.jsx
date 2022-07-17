@@ -1,7 +1,6 @@
-import React from "react";
+import { StyledP } from "./modal.style";
 import Modal from "react-modal";
 import Button from "../button/button";
-import { StyledP } from "./modal.style";
 import "./modal.css";
 
 const ModalBox = (props) => {

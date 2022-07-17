@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
-
+import { StyledForm, StyledDiv } from "./form.style";
+import { REACT_APP_BASE_URL } from "../../config";
+import { todosContext } from "./../../context/todosContext";
+import { Formik } from "formik";
+import { toast } from "react-toastify";
+import * as yup from "yup";
+import axios from "axios";
 import Button from "../button/button";
 import Input from "../input/input";
 import Search from "./../search/search";
-import { StyledForm, StyledDiv } from "./form.style";
-import Task from "./../task/task";
 import Textarea from "../textarea/textarea";
-import axios from "axios";
-import styled from "styled-components";
-import { todosContext } from "./../../context/todosContext";
-import React from "react";
-import { toast } from "react-toastify";
-import * as yup from "yup";
-import { Formik } from "formik";
 
 const Form = () => {
   const [todos, setTodos] = useState([]);
-  // const [title, setTitle] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [error, setError] = useState("");
 
   const errorNotify = (msg) => toast.error(msg);
   const successNotify = (msg) => toast.success(msg);
@@ -35,22 +29,23 @@ const Form = () => {
   });
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/todo/todos/").then((response) => {
+    // console.log(REACT_APP_BASE_URL);
+    axios.get(`${REACT_APP_BASE_URL}/todos/`).then((response) => {
       setTodos(response.data);
     });
   }, []);
 
   const submitHandler = (values, { resetForm }) => {
-    console.log("Form submitted");
+    // console.log("Form submitted");
 
-    axios.post("http://127.0.0.1:8000/todo/todos/", values).then(
+    axios.post(`${REACT_APP_BASE_URL}/todos/`, values).then(
       (response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setTodos((prevTodos) => prevTodos.concat(response.data));
         successNotify("Task added Successfully");
       },
       (error) => {
-        console.log(error);
+        // console.log(error);
         if (error.response.status >= 500 && error.response.status <= 599) {
           return errorNotify("Something went wrong, but that's not your fault");
         } else {
@@ -60,26 +55,6 @@ const Form = () => {
     );
     resetForm({});
   };
-
-  // const titleOnChangeHandler = (e) => {
-  //   setTitle(e.target.value);
-  //   // if (e.target.value.length >= 201) {
-  //   //   setError("Title should be less than 200 characterssssss");
-  //   // } else {
-  //   //   setError("");
-  //   // }
-  //   console.log(title);
-  // };
-  // const descriptionOnChangeHandler = (e) => {
-  //   setDescription(e.target.value);
-  //   // if (e.target.value.length >= 201) {
-  //   //   setError("Description should be less than 3000 characterssssss");
-  //   // } else {
-  //   //   setError("");
-  //   // }
-  //   console.log(description);
-  // };
-
   return (
     <Formik
       initialValues={{
@@ -90,58 +65,48 @@ const Form = () => {
       onSubmit={(values, { resetForm }) => submitHandler(values, { resetForm })}
     >
       {(formik) => (
-        console.log(formik.values),
-        (
-          <StyledForm>
+        // console.log(formik.values),
+        <StyledForm>
+          <div>
             <div>
-              <div>
-                {" "}
-                <Input
-                  name="title"
-                  type="text"
-                  placeholder={"Title"}
-                  // value={title}
-                  // onChange={titleOnChangeHandler}
-                  variant="text"
-                  width={"276px"}
-                  margintop={"28px"}
-                  value={formik.values.title}
-                  errorname="title"
-                />
-              </div>
-              <div>
-                {" "}
-                <Textarea
-                  type={"text"}
-                  placeholder={"description"}
-                  name="description"
-                  as="textarea"
-                  // onChange={descriptionOnChangeHandler}
-                  // value={description}
-                  errorname="description"
-                  value={formik.values.description}
-                />
-              </div>
-              <StyledDiv>
-                {" "}
-                <Button
-                  backgroundColor={"#00B2FF"}
-                  margintop={"18px"}
-                  width={"115px"}
-                  height={"34px"}
-                  hoverBackgroundColor={"#4dc9ff"}
-                  onClick={successNotify}
-                  type="submit"
-                >
-                  Add
-                </Button>
-              </StyledDiv>{" "}
-              <todosContext.Provider value={{ todos, setTodos }}>
-                <Search />
-              </todosContext.Provider>
+              <Input
+                value={formik.values.title}
+                name="title"
+                type="text"
+                placeholder={"Title"}
+                errorname="title"
+                width={"276px"}
+                margintop={"28px"}
+              />
             </div>
-          </StyledForm>
-        )
+            <div>
+              <Textarea
+                value={formik.values.description}
+                name="description"
+                type={"text"}
+                placeholder={"description"}
+                errorname="description"
+                as="textarea"
+              />
+            </div>
+            <StyledDiv>
+              <Button
+                onClick={successNotify}
+                type="submit"
+                backgroundColor={"#00B2FF"}
+                hoverBackgroundColor={"#4dc9ff"}
+                width={"115px"}
+                height={"34px"}
+                margintop={"18px"}
+              >
+                Add
+              </Button>
+            </StyledDiv>{" "}
+            <todosContext.Provider value={{ todos, setTodos }}>
+              <Search />
+            </todosContext.Provider>
+          </div>
+        </StyledForm>
       )}
     </Formik>
   );

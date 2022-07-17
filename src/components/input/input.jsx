@@ -1,12 +1,11 @@
 import { StyledInput, StyledDiv } from "./input.style";
 import { useField, ErrorMessage } from "formik";
 const Input = (props) => {
-  const [field, meta] = useField(props);
+  const [field] = useField(props);
 
   return (
     <>
       <StyledInput
-        htmlFor={props.htmlFor}
         type={props.type}
         placeholder={props.placeholder}
         value={props.value}

@@ -27,7 +27,6 @@ export const StyledCheckbox = styled.input`
     border: 0px hidden #cccccc;
     background: #ffffff;
     border-radius: 3px;
-   
   }
   /* checked mark aspect */
   &:not(:checked) + label:after,

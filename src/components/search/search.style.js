@@ -23,6 +23,6 @@ export const StyledInput = styled.input.attrs({ type: "search" })`
 `;
 
 export const StyledDiv = styled.div`
-display: flex;
-flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;

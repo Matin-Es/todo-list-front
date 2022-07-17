@@ -1,10 +1,8 @@
-import "./App.css";
-import Form from "./components/form/form";
-import Header from "./components/header/header";
-import Search from "./components/search/search";
 import { ToastContainer } from "react-toastify";
-
+import Header from "./components/header/header";
+import Form from "./components/form/form";
 import "react-toastify/dist/ReactToastify.css";
+
 function App() {
   return (
     <>

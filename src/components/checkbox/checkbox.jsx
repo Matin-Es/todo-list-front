@@ -1,4 +1,3 @@
-import React from "react";
 import { StyledCheckbox } from "./checkbox.style";
 const Checkbox = (props) => {
   return (
