@@ -49,23 +49,27 @@ const Search = (props) => {
   const PageCount = Math.ceil(todos.length / PER_PAGE);
 
   const deleteHandler = (id) => {
-    axios
-      .delete(`http://127.0.0.1:8000/todo/todos/${id}/`)
-      .then((response) => {
-        setTodos(
-          todos.filter((todo) => {
-            return todo.id !== id;
-          })
-        );
-        successNotify("Task deleted Successfully");
-      })
-      .catch((error) => {
-        if (error.response.status >= 500 && error.response.status <= 599) {
-          errorNotify("Something went wrong, but that's not your fault");
-        } else {
-          errorNotify("Something went wrong");
-        }
-      });
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      axios
+        .delete(`http://127.0.0.1:8000/todo/todos/${id}/`)
+        .then(() => {
+          setTodos(
+            todos.filter((todo) => {
+              return todo.id !== id;
+            })
+          );
+          successNotify("Task deleted Successfully");
+        })
+        .catch((error) => {
+          if (error.response.status >= 500 && error.response.status <= 599) {
+            errorNotify("Something went wrong, but that's not your fault");
+          } else {
+            errorNotify("Something went wrong");
+          }
+        });
+    } else {
+      return;
+    }
   };
 
   const debounce = (func, timeout = 350) => {
