@@ -23,20 +23,21 @@ const Task = (props) => {
         type="checkbox"
       />
       <div onClick={props.notifyHandler}>
-      <Button
-        backgroundColor={props.backgroundColor}
-        disabled={props.disabled}
-        onClick={props.onClick}
-        width=" 30px"
-        height="30px"
-        backgroundImage={"url(/trash-bin.svg)"}
-        position="relative"
-        top="10px"
-        left="13px"
-        type="button"
-      >
-        {props.children}
-      </Button></div>
+        <Button
+          backgroundColor={props.backgroundColor}
+          disabled={props.disabled}
+          onClick={props.onClick}
+          width=" 30px"
+          height="30px"
+          backgroundImage={"url(/trash-bin.svg)"}
+          position="relative"
+          top="10px"
+          left="13px"
+          type="button"
+        >
+          {props.children}
+        </Button>
+      </div>
     </StyledDiv>
   );
 };

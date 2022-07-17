@@ -100,7 +100,7 @@ const Search = (props) => {
           );
         },
         (error) => {
-          if (error.response.status === 500) {
+          if (error.response.status >= 500 && error.response.status <= 599) {
             errorNotify("Something went wrong, but that's not your fault");
           } else {
             errorNotify("Something went wrong");

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-
-export const StyledForm = styled.form`
+import { Form } from "formik";
+export const StyledForm = styled(Form)`
   display: flex;
   justify-content: center;
 `;
@@ -8,4 +8,4 @@ export const StyledForm = styled.form`
 export const StyledDiv = styled.div`
   display: flex;
   justify-content: center;
-`
+`;

@@ -1,5 +1,6 @@
 import styled from "styled-components";
-export const StyledTextarea = styled.textarea`
+import { Field } from "formik";
+export const StyledTextarea = styled(Field)`
   padding: 10px;
   font-size: 16px;
   border-width: 0px;
@@ -20,4 +21,9 @@ export const StyledTextarea = styled.textarea`
   :focus {
     outline: none;
   }
+`;
+export const StyledDiv = styled.div`
+  font-family: "Inter", sans-serif;
+  margin-top: 5px;
+  color: red;
 `;

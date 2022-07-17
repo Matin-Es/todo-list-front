@@ -10,7 +10,7 @@ export const StyledButton = styled.button`
   cursor: pointer;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
-  margin-top: ${(props) => props.marginTop};
+  margin-top: ${(props) => props.margintop};
   text-align: center;
   position: ${(props) => props.position};
   top: ${(props) => props.top};

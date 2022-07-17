@@ -6,7 +6,7 @@ const Button = (props) => {
       disabled={props.disabled}
       onClick={props.onClick}
       backgroundColor={props.backgroundColor}
-      marginTop={props.marginTop}
+      margintop={props.margintop}
       width={props.width}
       height={props.height}
       backgroundImage={props.backgroundImage}
