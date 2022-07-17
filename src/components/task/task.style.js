@@ -2,7 +2,6 @@ import styled from "styled-components";
 export const StyledDiv = styled.div`
   display: flex;
   align-items: center;
- 
 `;
 export const StyledUl = styled.ul`
   margin-top: 26px;
@@ -23,4 +22,8 @@ export const StyledLi = styled.li`
   font-family: "Inter", sans-serif;
   width: 196px;
   margin-top: ${(props) => props.marginTop};
+`;
+
+export const StyledSpan = styled.span`
+  font-family: "Inter", sans-serif;
 `;

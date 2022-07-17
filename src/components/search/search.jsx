@@ -156,7 +156,7 @@ const Search = (props) => {
               description={todo.description}
               backgroundColor="#ffffff"
               disabled={loading}
-              onClick={() => deleteHandler(todo.id)}
+              deleteHandler={() => deleteHandler(todo.id)}
               placeholder={"completed"}
               onChange={(e) => processChange(e, todo.id)}
               checked={todo.completed}

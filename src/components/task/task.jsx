@@ -1,7 +1,9 @@
 import React from "react";
 import Button from "../button/button";
 import Checkbox from "../checkbox/checkbox";
-import { StyledDiv, StyledUl, StyledLi } from "./task.style";
+import { StyledDiv, StyledUl, StyledLi ,StyledSpan} from "./task.style";
+import Tooltip from "rc-tooltip";
+import "rc-tooltip/assets/bootstrap.css";
 
 const Task = (props) => {
   const truncate = (str) => {
@@ -10,7 +12,18 @@ const Task = (props) => {
   return (
     <StyledDiv key={props.id}>
       <StyledUl onClick={props.onRequestOpen}>
-        <StyledLi marginTop={props.marginTop}>{truncate(props.title)}</StyledLi>
+        <Tooltip
+          placement="top"
+          trigger={props.title.length >= 11 ? ["hover"] : [""]}
+          // visible={props.title.length >= 12 ? true : false}
+          // defaultVisible={true}
+          mouseEnterDelay={1.5}
+          overlay={<StyledSpan>{props.title}</StyledSpan>}
+        >
+          <StyledLi marginTop={props.marginTop}>
+            {truncate(props.title)}
+          </StyledLi>
+        </Tooltip>
         {/* <li>{props.description}</li> */}
       </StyledUl>
       <Checkbox
@@ -26,7 +39,7 @@ const Task = (props) => {
         <Button
           backgroundColor={props.backgroundColor}
           disabled={props.disabled}
-          onClick={props.onClick}
+          onClick={props.deleteHandler}
           width=" 30px"
           height="30px"
           backgroundImage={"url(/trash-bin.svg)"}
